@@ -97,15 +97,18 @@ public class Spielfeld implements Serializable
 		{
 			throw new RuntimeException("Invalid size");
 		}
-		for(int i = 0; i <= feld.length-xDimension; i++)
+		for(int i = 0; i <= feld.length-xDimension; i+=xDimension)
 		{
-			for (int j = 0; j <= feld[i].length-yDimension; j++)
+			for (int j = 0; j <= feld[i].length-yDimension; j+=yDimension)
 			{
+				System.out.println(j);
 				for(int x = 0; x < xDimension; x++)
 				{
+					System.out.println("v");
 					for(int y = 0; y < yDimension; y++)
 					{
-						if(feld[i+x][j+y] != 0)
+						System.out.println("c");
+						if(feld[i/xDimension+x][j/yDimension+y] != 0)
 						{
 							ret.setRGB(i+x, j+y, Color.red.getRGB());
 						}

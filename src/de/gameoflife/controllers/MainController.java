@@ -34,8 +34,8 @@ public class MainController
 	 */
 	public MainController() 
 	{
-		spielfeld = new Spielfeld(100, 100, Modus.BEGRENZT);		
-		BufferedImage image = spielfeld.toImage(100, 100);
+		spielfeld = new Spielfeld(20, 20, Modus.BEGRENZT);		
+		BufferedImage image = spielfeld.toImage(40, 40);
 		try {
 			ImageIO.write(image, "png", new File("/home/ds/export"));
 		} catch (IOException e) {
