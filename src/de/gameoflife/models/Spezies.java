@@ -1,5 +1,6 @@
 package de.gameoflife.models;
 
+import java.awt.Color;
 import java.io.Serializable;
 
 /**
@@ -33,6 +34,11 @@ public class Spezies implements Serializable
 	private int maximum;
 	
 	/**
+	 * Farbe des Felds auf dem Spielfeld
+	*/
+	private Color farbe;
+	
+	/**
 	 * Anzahl Instanzen dieser Klasse
 	 */
 	private static int zaehler;
@@ -54,6 +60,7 @@ public class Spezies implements Serializable
 		maximum = 4;
 		isolation = 1;
 		editierbar = false;
+		farbe = Color.RED;
 	}
 	
 	/**
@@ -62,13 +69,14 @@ public class Spezies implements Serializable
 	 * @param isolation Isolation
 	 * @param maximum Maximum
 	 */
-	public Spezies(int geburt, int isolation, int maximum)
+	public Spezies(int geburt, int isolation, int maximum, Color farbe)
 	{
 		zaehler++;
 		this.id = zaehler;
 		this.geburt = geburt;
 		this.maximum = maximum;
 		this.isolation = isolation;
+		this.farbe = farbe;
 		editierbar = true;
 	}
 	
@@ -112,7 +120,7 @@ public class Spezies implements Serializable
 	{
 		return isolation;
 	}
-	
+
 	/**
 	 * Setzt den Isolationswert. Muss zwischen 1 und 8 liegen und 
 	 * unterhalb des Maximums.
@@ -148,5 +156,23 @@ public class Spezies implements Serializable
 			this.maximum = maximum;
 		}
 		throw new RuntimeException("Ungültiger Maximalwert");
+	}
+	
+	/**
+	 * Gibt die aktuelle Farbe zurück
+	 * @return Farbe
+	 */
+	public Color getFarbe()
+	{
+		return this.farbe;
+	}
+	
+	/**
+	 * Setzt die Farbe
+	 * @param farbe Farbe
+	 */
+	public void setFarbe(Color farbe)
+	{
+		this.farbe = farbe;
 	}
 }

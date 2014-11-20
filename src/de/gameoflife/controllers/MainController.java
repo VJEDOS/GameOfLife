@@ -34,14 +34,19 @@ public class MainController
 	 */
 	public MainController() 
 	{
-		spielfeld = new Spielfeld(20, 20, Modus.BEGRENZT);		
-		BufferedImage image = spielfeld.toImage(40, 40);
-		try {
-			ImageIO.write(image, "png", new File("/home/ds/export"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		spielfeld = new Spielfeld(20, 20, Modus.BEGRENZT);		
+//		BufferedImage image = spielfeld.toImage(140, 140);
+//		try 
+//		{
+//			ImageIO.write(image, "png", new File("/home/ds/export"));
+//		}
+//		catch (IOException e) 
+//		{
+//			e.printStackTrace();
+//		}
+		spielfeld = new Spielfeld();
+		spielfeld.naechsterZug();
+		spielfeld.print();
 	}
 	
 	/**
