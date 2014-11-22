@@ -155,37 +155,47 @@ public class Spielfeld implements Serializable
 	
 	/**
 	 * Erstellt ein Buffered Image aus diesem Spielfeld
+	 * Skaliert das Feld hoch
 	 * @param xSize Breite des Bildes
 	 * @param ySize Höhe des Bildes
 	 * @return Buffered Image
 	 */
 	public BufferedImage toImage(int xSize, int ySize)
 	{
-		BufferedImage ret = new BufferedImage(xSize, ySize, BufferedImage.TYPE_3BYTE_BGR);
-		int xDimension = xSize/ feld.length;
-		int yDimension = ySize / feld[0].length;
+		/*
+		 * -1 für das Raster 
+		 */
+		int xDimension = xSize / feld.length - 1;
+		int yDimension = ySize / feld[0].length - 1;
+		
 		if (xDimension <= 0 || yDimension <= 0)
 		{
 			throw new RuntimeException("Invalid size");
 		}
-		for(int i = 0; i <= feld.length-xDimension; i+=xDimension)
+		BufferedImage ret = new BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB);
+		for(int i = 0; i < feld.length; i++)
 		{
-			for (int j = 0; j <= feld[i].length-yDimension; j+=yDimension)
+			for (int j = 0; j < feld[i].length; j++)
 			{
-				for(int x = 0; x < xDimension; x++)
+				/*
+				 * Die Schleifen starten bei 1, damit sie das Raster nicht überschreiben
+				 */
+				for(int x = 1; x < xDimension; x++)
 				{
-					for(int y = 0; y < yDimension; y++)
+					for(int y = 1; y < yDimension; y++)
 					{
-						if(feld[i/xDimension+x][j/yDimension+y] != 0)
+						if(feld[i][j] != 0)
 						{
-							ret.setRGB(i+x, j+y, spezien.get(feld[i/xDimension+x][j/yDimension+y]).getFarbe().getRGB());
+							ret.setRGB(i*xDimension+x, j*yDimension+y, spezien.get(feld[i][j]).getFarbe().getRGB());
 						}
 						else
 						{
-							ret.setRGB(i+x, j+y, Color.white.getRGB());
+							ret.setRGB(i*xDimension+x, j*yDimension+y, Color.white.getRGB());
 						}
 					}
+					ret.setRGB(i*xDimension, (j+1)*yDimension, Color.BLACK.getRGB());
 				}
+				ret.setRGB((i+1)*xDimension, (j+1)*yDimension, Color.BLACK.getRGB());
 			}
 		}
 		return ret;
@@ -205,7 +215,7 @@ public class Spielfeld implements Serializable
 		/*
 		 * Bestimmung der Nachbarn bei einem begrenzten Feld
 		 */
-		if(modus == Modus.BEGRENZT)
+		if (modus == Modus.BEGRENZT)
 		{
 			array[0] = ( x+1 >= field.length || y+1 >= field[0].length ? 0 : feld[x+1][y+1]);
 			array[1] = ( x+1 >= field.length ? 0 : feld[x+1][y]);
@@ -217,7 +227,7 @@ public class Spielfeld implements Serializable
 			array[7] = ( x-1 < 0 || y-1 < 0 ? 0 : feld[x-1][y-1]);		
 		}
 		/*
-		 * Bestimmung der Nachbarn bei einem Ttorsus-Feld
+		 * Bestimmung der Nachbarn bei einem Torsus-Feld
 		 */
 		else if (modus == Modus.TORSUS)
 		{
@@ -247,22 +257,22 @@ public class Spielfeld implements Serializable
 		/*
 		 * X-Wert
 		 */
-		if(x < 0)
+		if (x < 0)
 		{
 			tempX = feld.length-1;
 		}
-		else if(x >= feld.length)
+		else if (x >= feld.length)
 		{
 			tempX = 0;
 		}
 		/*
 		 * Y-Wert
 		 */
-		if(y < 0)
+		if (y < 0)
 		{
 			tempY = feld[0].length-1;
 		}
-		else if(y >= feld[0].length)
+		else if (y >= feld[0].length)
 		{
 			tempY = 0;
 		}
@@ -294,26 +304,27 @@ public class Spielfeld implements Serializable
 	public Spielfeld()
 	{
 		feld = new int[4][4];
-		modus = Modus.TORSUS;
+		modus = Modus.BEGRENZT;
 		spezien = new HashMap<Integer, Spezies>();
 		Spezies s = new Spezies();
 		spezien.put(s.getId(), s);
-		feld[1][1] = 1;
-		feld[2][1] = 1;
-		feld[0][2] = 1;
-		feld[2][2] = 1;
-		feld[1][3] = 1;
+		Spezies s2 = new Spezies(2,3,4,Color.blue);
+		spezien.put(s2.getId(), s2);
+		feld[1][0] = 1;
 		feld[2][0] = 1;
-				
+		feld[3][0] = 1;		
+		feld[1][2] = 2;
+		feld[2][2] = 2;
+						
 		print();
 	}
 	
 	
 	public void print()
 	{ 
-		for(int i = 0; i < feld.length; i++)
+		for (int i = 0; i < feld.length; i++)
 		{
-			for(int j = 0; j < feld[i].length; j++)
+			for (int j = 0; j < feld[i].length; j++)
 			{
 				System.out.print(feld[i][j] + "  ");
 			}
