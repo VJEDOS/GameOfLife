@@ -200,7 +200,7 @@ public class Spielfeld implements Serializable
 		}
 		return ret;
 	}
-	
+		
 	/**
 	 * Bestimmt die Nachbarn (aktuell nur für begrenztes feld)
 	 * @param field
@@ -251,7 +251,7 @@ public class Spielfeld implements Serializable
 	 * @return Wert
 	 */
 	private int gegenueber(int[][] feld, int x, int y)
-	{
+	{		
 		int tempX = x;
 		int tempY = y;
 		/*

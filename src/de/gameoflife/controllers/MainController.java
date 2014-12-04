@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -30,6 +31,11 @@ public class MainController
 	private int zeitschritt;
 	
 	/**
+	 * Die Bilder, die für den gif Export benötigt werden, werden hier gespeichert
+	 */
+	private ArrayList<BufferedImage> bilder;
+	
+	/**
 	 * Erstellt einen neuen Controller
 	 */
 	public MainController() 
@@ -38,7 +44,7 @@ public class MainController
 		spielfeld = new Spielfeld();
 		spielfeld.naechsterZug();
 		spielfeld.print();
-		BufferedImage image = spielfeld.toImage(140, 140);
+		BufferedImage image = spielfeld.toImage(5000, 5000	);
 		try 
 		{
 			ImageIO.write(image, "png", new File("/home/ds/export"));
@@ -52,16 +58,15 @@ public class MainController
 	/**
 	 * Speichert den aktuellen Spielstand
 	 * @param path Speicherpfad
-	 * @throws Exception Exception wird geworfen, wenn 
-	 * 
+	 * @throws Exception Exception wird geworfen, wenn ein Fehler bein Speichern auftritt
 	 * F301
 	 */
-	public void saveGame(String path) throws Exception
+	public void speichern(String pfad) throws Exception
 	{
 		ObjectOutputStream outputStream;
 		try
 		{
-			outputStream = new ObjectOutputStream(new FileOutputStream(path));
+			outputStream = new ObjectOutputStream(new FileOutputStream(pfad));
 		}
 		catch(Exception ex)
 		{
@@ -79,12 +84,12 @@ public class MainController
 	 * 
 	 * F302
 	 */
-	public void loadGame(String path) throws Exception
+	public void laden(String pfad) throws Exception
 	{
 		ObjectInputStream inputStream;
 		try
 		{
-			inputStream = new ObjectInputStream(new FileInputStream(path));
+			inputStream = new ObjectInputStream(new FileInputStream(pfad));
 		}
 		catch(Exception e)
 		{
@@ -92,5 +97,31 @@ public class MainController
 		}
 		spielfeld = (Spielfeld)inputStream.readObject();
 		inputStream.close();
+	}
+	
+	/**
+	 * 
+	 * @param pfad
+	 * @param xSize
+	 * @param ySize
+	 */
+	public void bildExport(String pfad, int xSize, int ySize)
+	{
+		try 
+		{
+			ImageIO.write(spielfeld.toImage(xSize, ySize), "png", new File("/home/ds/export"));
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void bildExportGif(String pfad, int xSize, int ySize)
+	{
+		
 	}
 }

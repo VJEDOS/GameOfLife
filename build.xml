@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<project name="GameOfLife" default="archive">
+	<description>
+		Game of Life
+	</description>
+  <tstamp>
+	<format property="timestamp.isoformat" pattern="yyyy-MM-dd’ ’HH:mm:ss" locale="de" />
+  </tstamp>
+
+  <target name="help" description="Zeigt Hilfe an">
+    <echo>
+	Game of Life
+    </echo>
+    <exec executable="ant">
+      <arg value="-p" />
+    </exec>
+  </target>
+
+  <target name="init" description="Legt Build und Dist-Verzeichnis an">
+    <mkdir dir="build/classes"/>
+    <mkdir dir="dist"/>
+  </target>
+
+  <target name="create-manifest" depends="init" description="Erstellt das Manifest">
+    <manifest file="./MANIFEST.MF">
+	  <attribute name="Built-By" value="Vethiha Jegatheesan, Dominik Stegemann" />
+	  <attribute name="Built-On" value="${timestamp.isoformat}" />
+	  <attribute name="Main-Class" value="de/gameoflife/main/Main" />
+	</manifest>
+  </target>
+
+	<target name="compile" depends="init" description="Kompilliert die Datei">
+		<javac includeAntRuntime="true" srcdir="src" destdir="build/classes" debug="true" debuglevel="lines,vars,source">
+			<classpath id="project.class.path">
+				<pathelement path="${java.class.path}/" />
+			</classpath>
+	 	</javac>  
+    </target>
+
+	<target name="archive" depends="create-manifest" description="Packt die Dateien zu einem Jar">
+		<jar destfile="dist/gameoflife.jar"
+			basedir="build/classes"
+			manifest="./MANIFEST.MF"
+		/>
+	</target>
+
+  <target name="execute" depends="compile" description="Ausführung">
+    <java classpath="build/classes"
+	        classname="de.gameoflife.main.Main" />
+  </target>
+
+  <target name="execute-jar" depends="archive" description="Jar Ausführen">
+	<java classpath="dist/gameoflife.jar"
+		  classname="de.gameoflife.main.Main" />
+  </target>
+
+  <target name="clean" depends="init" description="Löscht alles">
+    <delete dir="build"/>
+    <delete dir="dist"/>
+  </target>
+
+</project>
