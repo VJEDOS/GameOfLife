@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import de.gameoflife.enums.Modus;
+import de.gameoflife.models.GifWriter;
 import de.gameoflife.models.Spielfeld;
 
 /**
@@ -36,22 +37,57 @@ public class MainController
 	private ArrayList<BufferedImage> bilder;
 	
 	/**
+	 * x-Größe des Gifs
+	 */
+	private int x;
+	
+	/**
+	 * y-Größe des Gifs
+	 */
+	private int y;
+	
+	/**
+	 * Anzahl Bilder, die noch in den gif writer geschrieben werden
+	 */
+	private int bilderAnzahl;
+	
+	/**
+	 * Der Gif Writer
+	 */
+	private GifWriter gifWriter;
+	
+	/**
+	 * Angabe, ob Bildexport läuft
+	 */
+	private boolean bilderExport;
+	
+	/**
 	 * Erstellt einen neuen Controller
 	 */
 	public MainController() 
 	{
-//		spielfeld = new Spielfeld(20, 20, Modus.BEGRENZT);		
+		//spielfeld = new Spielfeld(20, 20, Modus.BEGRENZT);		
 		spielfeld = new Spielfeld();
+		starteGifExport("/home/ds/export.gif", 100, 100, 1000, 2);
+		zug();
+		zug();
+	}
+	
+	/**
+	 * Führt einen Zug aus
+	 */
+	public void zug()
+	{
 		spielfeld.naechsterZug();
-		spielfeld.print();
-		BufferedImage image = spielfeld.toImage(5000, 5000	);
-		try 
+		if(bilderExport)
 		{
-			ImageIO.write(image, "png", new File("/home/ds/export"));
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
+			gifWriter.add(spielfeld.toImage(x, y));
+			bilderAnzahl--;
+			if(bilderAnzahl == 0)
+			{
+				bilderExport = false;
+				schreibeGif();
+			}
 		}
 	}
 	
@@ -104,24 +140,44 @@ public class MainController
 	 * @param pfad
 	 * @param xSize
 	 * @param ySize
+	 * @return Angabe, ob erfolgreich oder nicht
 	 */
-	public void bildExport(String pfad, int xSize, int ySize)
+	public boolean bildExport(String pfad, int xSize, int ySize)
 	{
 		try 
 		{
-			ImageIO.write(spielfeld.toImage(xSize, ySize), "png", new File("/home/ds/export"));
+			ImageIO.write(spielfeld.toImage(xSize, ySize), "png", new File(pfad));
 		}
 		catch (IOException e) 
 		{
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	
 	/**
-	 * 
+	 * Startet den Gif export
+	 * @param pfad Zielpfad
+	 * @param xSize x-größe
+	 * @param ySize y-größe
+	 * @param sekunden Sekunden zwischen den Bildern
+	 * @param bilderAnzahl Anzahl bilder
 	 */
-	public void bildExportGif(String pfad, int xSize, int ySize)
+	public void starteGifExport(String pfad, int xSize, int ySize, int sekunden, int bilderAnzahl)
 	{
-		
+		this.gifWriter = new GifWriter(pfad, sekunden);
+		this.x = xSize;
+		this.y = ySize;
+		this.bilderAnzahl = bilderAnzahl;
+		this.bilderExport = true;
+	}
+	
+	/**
+	 * Schreibt ein gif
+	 */
+	private void schreibeGif()
+	{
+		this.gifWriter.write();
 	}
 }
