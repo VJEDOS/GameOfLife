@@ -24,7 +24,7 @@
 
   <target name="create-manifest" depends="init" description="Erstellt das Manifest">
     <manifest file="./MANIFEST.MF">
-	  <attribute name="Built-By" value="Vethiha Jegatheesan, Dominik Stegemann" />
+	  <attribute name="Built-By" value="Dominik Stegemann, Vethiha Jegatheesan" />
 	  <attribute name="Built-On" value="${timestamp.isoformat}" />
 	  <attribute name="Main-Class" value="de/gameoflife/main/Main" />
 	</manifest>

@@ -19,48 +19,53 @@ import de.gameoflife.models.Spielfeld;
  * Der Hauptcontroller, der GUI und Logik verwaltet
  * @author Dominik Stegemann
  */
-public class MainController
+public class MainController implements Runnable
 {
 	/**
 	 * Das Spielfeld
 	 */
 	private Spielfeld spielfeld;
-	
+
 	/**
 	 * Zeit zwischen zwei Zügen
 	 */
 	private int zeitschritt;
-	
+
 	/**
 	 * Die Bilder, die für den gif Export benötigt werden, werden hier gespeichert
 	 */
 	private ArrayList<BufferedImage> bilder;
-	
+
 	/**
 	 * x-Größe des Gifs
 	 */
 	private int x;
-	
+
 	/**
 	 * y-Größe des Gifs
 	 */
 	private int y;
-	
+
 	/**
 	 * Anzahl Bilder, die noch in den gif writer geschrieben werden
 	 */
 	private int bilderAnzahl;
-	
+
 	/**
 	 * Der Gif Writer
 	 */
 	private GifWriter gifWriter;
-	
+
 	/**
 	 * Angabe, ob Bildexport läuft
 	 */
 	private boolean bilderExport;
-	
+
+	/**
+	 * Angabe, ob gestartet
+	 */
+	private volatile boolean gestartet;
+
 	/**
 	 * Erstellt einen neuen Controller
 	 */
@@ -68,11 +73,14 @@ public class MainController
 	{
 		//spielfeld = new Spielfeld(20, 20, Modus.BEGRENZT);		
 		spielfeld = new Spielfeld();
-		starteGifExport("/home/ds/export.gif", 100, 100, 1000, 2);
+		//DEBUG
+		/*starteGifExport("/home/ds/export.gif", 100, 100, 1000, 2);
 		zug();
-		zug();
+		zug();*/
+		Thread t = new Thread(this);
+		t.start();
 	}
-	
+
 	/**
 	 * Führt einen Zug aus
 	 */
@@ -90,7 +98,7 @@ public class MainController
 			}
 		}
 	}
-	
+
 	/**
 	 * Speichert den aktuellen Spielstand
 	 * @param path Speicherpfad
@@ -111,7 +119,7 @@ public class MainController
 		outputStream.writeObject(spielfeld);
 		outputStream.close();
 	}
-	
+
 	/**
 	 * Laedt einen Spielstand
 	 * @param path Aus diesem Pfad wird gelesen-
@@ -134,7 +142,7 @@ public class MainController
 		spielfeld = (Spielfeld)inputStream.readObject();
 		inputStream.close();
 	}
-	
+
 	/**
 	 * 
 	 * @param pfad
@@ -155,7 +163,7 @@ public class MainController
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Startet den Gif export
 	 * @param pfad Zielpfad
@@ -171,6 +179,46 @@ public class MainController
 		this.y = ySize;
 		this.bilderAnzahl = bilderAnzahl;
 		this.bilderExport = true;
+	}
+
+	@Override
+	public void run() 
+	{
+		while(true)
+		{
+			while (gestartet)
+			{
+				System.out.println("Alive");
+				zug();
+				try 
+				{
+					Thread.sleep(zeitschritt*1000);
+				} 
+				catch (InterruptedException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Setzt gestartet
+	 * @param gestartet Gestartet
+	 */
+	public void setGestartet(boolean gestartet)
+	{
+		this.gestartet = gestartet;
+	}
+
+	/**
+	 * Setze Zeitschritt
+	 * @param zeit Setzt Zeit
+	 */
+	public void setZeitschritt(int zeit)
+	{
+		this.zeitschritt = zeit;
 	}
 	
 	/**

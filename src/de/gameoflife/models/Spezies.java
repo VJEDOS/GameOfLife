@@ -175,4 +175,12 @@ public class Spezies implements Serializable
 	{
 		this.farbe = farbe;
 	}
+	
+	/**
+	 * Rückgabe Id
+	 */
+	@Override
+	public String toString() {
+		return String.valueOf(id);
+	}
 }
