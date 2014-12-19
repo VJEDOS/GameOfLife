@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import de.gameoflife.enums.Modus;
+import de.gameoflife.gui.AddFrame;
+import de.gameoflife.gui.ExportFrame;
+import de.gameoflife.gui.MainFrame;
 import de.gameoflife.models.GifWriter;
 import de.gameoflife.models.Spielfeld;
 
@@ -66,6 +69,12 @@ public class MainController implements Runnable
 	 */
 	private volatile boolean gestartet;
 
+	//////////////////////////////GUI///////////////////////////////////
+	
+	private MainFrame mainFrame;
+	private AddFrame addFrame;
+	private ExportFrame exportFrame;
+	
 	/**
 	 * Erstellt einen neuen Controller
 	 */

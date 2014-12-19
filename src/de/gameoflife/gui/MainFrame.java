@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import de.gameoflife.controllers.MainController;
 import de.gameoflife.models.Spezies;
@@ -101,7 +103,7 @@ public class MainFrame extends JFrame
 		
 	}
 	
-	private class Handler implements ActionListener
+	private class Handler implements ActionListener, ChangeListener
 	{
 
 		@Override
@@ -164,6 +166,14 @@ public class MainFrame extends JFrame
 		        {
 					JOptionPane.showMessageDialog(null, "Laden fehlgeschlagen", "Laden fehlgeschlagen", JOptionPane.INFORMATION_MESSAGE);
 				}
+			}
+		}
+
+		@Override
+		public void stateChanged(ChangeEvent arg0) {
+			if(arg0.getSource() == slider)
+			{
+				parent.setZeitschritt(slider.getValue());				
 			}
 		}
 				

@@ -1,5 +1,6 @@
 package de.gameoflife.gui;
 
-public class InitFrame {
+public class InitFrame 
+{
 
 }
