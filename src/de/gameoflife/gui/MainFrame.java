@@ -1,15 +1,21 @@
 package de.gameoflife.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.FocusTraversalPolicy;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import de.gameoflife.controllers.MainController;
 import de.gameoflife.models.Spezies;
@@ -26,6 +32,8 @@ public class MainFrame extends JFrame
 	private JButton save;
 	private JButton load;
 	private JButton export;
+	private JButton restart;
+	
 	//Jlist
 	private JList<Spezies> spezienliste;
 	private DefaultListModel listModel;
@@ -38,6 +46,7 @@ public class MainFrame extends JFrame
 	public MainFrame(MainController parent)
 	{
 		super("Game of Life");
+		this.parent = parent;
 		t = Toolkit.getDefaultToolkit();
 		Dimension d = t.getScreenSize();
 		x = (int)((d.getWidth()-width)/2);
@@ -46,8 +55,8 @@ public class MainFrame extends JFrame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.initComponents();
 		this.initListeners();
+		this.setFocusTraversalPolicy(new FocusTraversal());
 		setVisible(true);
-		this.parent = parent;
 	}
 	
 	private void initComponents()
@@ -62,6 +71,7 @@ public class MainFrame extends JFrame
 		this.save = new JButton("Save");
 		this.export = new JButton("Export");
 		this.load = new JButton("Load");
+		this.restart = new JButton("Restart");
 		// JSlider
 		this.slider = new JSlider(JSlider.HORIZONTAL,0,20,0);
 		this.slider.setMajorTickSpacing(5);
@@ -82,7 +92,10 @@ public class MainFrame extends JFrame
 		this.container.add(this.export);
 		this.container.add(this.slider);
 		listModel = new DefaultListModel<Spezies>();
-		listModel.addElement(new Spezies());
+		for(Spezies s : parent.getSpielfeld().getSpezien())
+		{
+			listModel.addElement(s);
+		}
 		this.spezienliste = new JList<Spezies>(listModel);
 		//this.spezienliste.setVisibleRowCount(4);
 		this.spezienliste.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -100,10 +113,12 @@ public class MainFrame extends JFrame
 		this.export.addActionListener(h);
 		this.load.addActionListener(h);
 		this.stop.addActionListener(h);
-		
+		this.restart.addActionListener(h);
+		this.slider.addChangeListener(h);
+		this.spezienliste.addListSelectionListener(h);
 	}
 	
-	private class Handler implements ActionListener, ChangeListener
+	private class Handler implements ActionListener, ChangeListener, ListSelectionListener
 	{
 
 		@Override
@@ -117,6 +132,14 @@ public class MainFrame extends JFrame
 			if (e.getSource() == stop)
 			{
 				parent.setGestartet(false);
+			}
+			if (e.getSource() == add)
+			{
+				parent.openAddFrame();
+			}
+			if (e.getSource() == restart)
+			{
+				
 			}
 			if (e.getSource() == save)
 			{
@@ -143,7 +166,7 @@ public class MainFrame extends JFrame
 			}
 			if (e.getSource() == export)
 			{
-				
+				parent.openExportFrame();
 			}
 			if (e.getSource() == load)
 			{
@@ -176,6 +199,52 @@ public class MainFrame extends JFrame
 				parent.setZeitschritt(slider.getValue());				
 			}
 		}
-				
+
+		@Override
+		public void valueChanged(ListSelectionEvent arg0) 
+		{
+			if (arg0.getSource() == spezienliste && spezienliste.getSelectedValue().getId() != 1)
+			{
+				parent.openEditFrame(spezienliste.getSelectedValue());
+			}
+		}			
+	}
+	
+	private class FocusTraversal extends FocusTraversalPolicy
+	{
+
+		@Override
+		public Component getComponentAfter(Container aContainer, Component aComponent) {
+			if(aComponent == play)
+			{
+				return add;
+			}
+			return null;
+		}
+
+		@Override
+		public Component getComponentBefore(Container aContainer, Component aComponent) {
+			if(aComponent == play)
+			{
+				return restart;
+			}
+			return null;
+		}
+
+		@Override
+		public Component getDefaultComponent(Container aContainer) {
+			return play;		
+		}
+		
+		@Override
+		public Component getFirstComponent(Container aContainer) {
+			return play;
+		}
+
+		@Override
+		public Component getLastComponent(Container aContainer) {
+			return restart;
+		}
+		
 	}
 }

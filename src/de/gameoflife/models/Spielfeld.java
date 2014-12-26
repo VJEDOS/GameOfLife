@@ -3,6 +3,7 @@ package de.gameoflife.models;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import de.gameoflife.enums.Modus;
 
@@ -152,6 +153,11 @@ public class Spielfeld implements Serializable
 		}
 		feld[x][y] = value;
 	}	
+	
+	public Collection<Spezies> getSpezien()
+	{
+		return spezien.values();
+	}
 	
 	/**
 	 * Erstellt ein Buffered Image aus diesem Spielfeld

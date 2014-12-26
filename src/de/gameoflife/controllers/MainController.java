@@ -14,8 +14,10 @@ import javax.imageio.ImageIO;
 import de.gameoflife.enums.Modus;
 import de.gameoflife.gui.AddFrame;
 import de.gameoflife.gui.ExportFrame;
+import de.gameoflife.gui.InitFrame;
 import de.gameoflife.gui.MainFrame;
 import de.gameoflife.models.GifWriter;
+import de.gameoflife.models.Spezies;
 import de.gameoflife.models.Spielfeld;
 
 /**
@@ -32,12 +34,8 @@ public class MainController implements Runnable
 	/**
 	 * Zeit zwischen zwei Zügen
 	 */
-	private int zeitschritt;
+	private volatile int zeitschritt;
 
-	/**
-	 * Die Bilder, die für den gif Export benötigt werden, werden hier gespeichert
-	 */
-	private ArrayList<BufferedImage> bilder;
 
 	/**
 	 * x-Größe des Gifs
@@ -69,25 +67,22 @@ public class MainController implements Runnable
 	 */
 	private volatile boolean gestartet;
 
-	//////////////////////////////GUI///////////////////////////////////
+	// GUI
 	
 	private MainFrame mainFrame;
 	private AddFrame addFrame;
 	private ExportFrame exportFrame;
+	private InitFrame initFrame;
 	
 	/**
 	 * Erstellt einen neuen Controller
 	 */
 	public MainController() 
 	{
-		//spielfeld = new Spielfeld(20, 20, Modus.BEGRENZT);		
-		spielfeld = new Spielfeld();
+		initFrame = new InitFrame();
 		//DEBUG
-		/*starteGifExport("/home/ds/export.gif", 100, 100, 1000, 2);
-		zug();
-		zug();*/
-		Thread t = new Thread(this);
-		t.start();
+		spielfeld = new Spielfeld();
+		openMainFrame();
 	}
 
 	/**
@@ -190,6 +185,9 @@ public class MainController implements Runnable
 		this.bilderExport = true;
 	}
 
+	/**
+	 * Hauptschleife, welche die Runden steuert
+	 */
 	@Override
 	public void run() 
 	{
@@ -228,6 +226,55 @@ public class MainController implements Runnable
 	public void setZeitschritt(int zeit)
 	{
 		this.zeitschritt = zeit;
+	}
+	
+	/**
+	 * Öffnet ein neues Hauptfenster, falls es noch keins gibt
+	 */
+	public void openMainFrame()
+	{
+		if (mainFrame == null)
+		{
+			mainFrame = new MainFrame(this);
+		}
+	}
+	
+	/**
+	 * Öffnet ein neues Hinzufuegen-Fenster, falls es noch keins gibt
+	 */
+	public void openAddFrame()
+	{
+		if (addFrame == null)
+		{
+//			addFrame = new AddFrame(this);
+		}
+	}
+	
+	/**
+	 * Öffnet ein neues Editfenster, falls es noch keins gibt
+	 */
+	public void openEditFrame(Spezies s)
+	{
+		if (addFrame == null)
+		{
+//			exportFrame  = new ExportFrame(this, s);
+		}
+	}
+
+	/**
+	 * Öffnet ein neues Exportfenster, falls es noch keins gibt
+	 */
+	public void openExportFrame()
+	{
+		if (exportFrame == null)
+		{
+//			exportFrame  = new ExportFrame(this);
+		}
+	}
+	
+	public Spielfeld getSpielfeld()
+	{
+		return spielfeld;
 	}
 	
 	/**

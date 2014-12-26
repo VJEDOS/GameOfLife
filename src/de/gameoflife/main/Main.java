@@ -16,13 +16,13 @@ public class Main
 	{
 		try 
 		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}
 		catch (Exception e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		MainFrame frame = new MainFrame(new MainController());
+		new MainController();
 	}
 }
