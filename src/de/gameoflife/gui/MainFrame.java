@@ -9,6 +9,7 @@ import java.awt.FocusTraversalPolicy;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Collection;
 
 import javax.swing.*;
@@ -41,7 +42,8 @@ public class MainFrame extends JFrame
 	private JSlider slider;
 	//Controller
 	private MainController parent;
-	
+	//Spielfeld
+	private JPanel feld;
 	
 	public MainFrame(MainController parent)
 	{
@@ -76,6 +78,7 @@ public class MainFrame extends JFrame
 		this.slider = new JSlider(JSlider.HORIZONTAL,0,20,0);
 		this.slider.setMajorTickSpacing(5);
 		this.slider.setPaintTicks(true);
+		this.slider.setMinimum(1);
 		//JLabel
 		this.add.setPreferredSize(new Dimension(120,30));
 		this.play.setPreferredSize(new Dimension(120,30));
@@ -102,6 +105,9 @@ public class MainFrame extends JFrame
 		this.spezienliste.setPreferredSize(new Dimension(150, 50));
 		this.getContentPane().add(this.container,BorderLayout.SOUTH);
 		this.getContentPane().add(new JScrollPane(this.spezienliste),BorderLayout.WEST);
+		
+		feld = new FieldPanel(parent.getSpielfeld());
+		this.add(feld, BorderLayout.CENTER);
 		this.pack();
 	}
 	

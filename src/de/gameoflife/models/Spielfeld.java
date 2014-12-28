@@ -5,13 +5,16 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
+
 import de.gameoflife.enums.Modus;
 
 /**
  * Diese Klasse repräsentiert das Spielfeld
  * @author Dominik Stegemann
  */
-public class Spielfeld implements Serializable
+public class Spielfeld  extends Observable implements Serializable
 {
 	/**
 	 * Das Spielfeld
@@ -136,6 +139,9 @@ public class Spielfeld implements Serializable
 		}
 		
 		feld = temp;
+		// Panel über Änderung informieren
+		setChanged();
+		super.notifyObservers();
 	}
 	
 	/**
@@ -318,7 +324,8 @@ public class Spielfeld implements Serializable
 		spezien.put(s2.getId(), s2);
 		feld[1][0] = 1;
 		feld[2][0] = 1;
-		feld[3][0] = 1;		
+		feld[3][0] = 1;
+		feld[2][1] = 1;
 		feld[1][2] = 2;
 		feld[2][2] = 2;
 						
@@ -332,7 +339,7 @@ public class Spielfeld implements Serializable
 		{
 			for (int j = 0; j < feld[i].length; j++)
 			{
-				System.out.print(feld[i][j] + "  ");
+				System.out.print(feld[j][i] + "  ");
 			}
 			System.out.println();
 		}

@@ -34,7 +34,7 @@ public class MainController implements Runnable
 	/**
 	 * Zeit zwischen zwei Zügen
 	 */
-	private volatile int zeitschritt;
+	private volatile int zeitschritt = 1;
 
 
 	/**
@@ -83,6 +83,8 @@ public class MainController implements Runnable
 		//DEBUG
 		spielfeld = new Spielfeld();
 		openMainFrame();
+		Thread t = new Thread(this);
+		t.start();
 	}
 
 	/**
@@ -193,12 +195,13 @@ public class MainController implements Runnable
 	{
 		while(true)
 		{
+			
 			while (gestartet)
 			{
-				System.out.println("Alive");
 				zug();
 				try 
 				{
+					System.out.println(zeitschritt);
 					Thread.sleep(zeitschritt*1000);
 				} 
 				catch (InterruptedException e) 
