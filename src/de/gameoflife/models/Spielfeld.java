@@ -160,9 +160,30 @@ public class Spielfeld  extends Observable implements Serializable
 		feld[x][y] = value;
 	}	
 	
+	/**
+	 * Gibt die Spezienliste zurück.
+	 * @return
+	 */
 	public Collection<Spezies> getSpezien()
 	{
 		return spezien.values();
+	}
+	
+	/**
+	 * Gibt die Breite des Felds zurueck
+	 * @return
+	 */
+	public int getWidth()
+	{
+		return feld[0].length;
+	}
+	
+	/**
+	 * Gibt die Hoehe des Felds zurueck
+	 */
+	public int getHeight()
+	{
+		return feld.length;
 	}
 	
 	/**

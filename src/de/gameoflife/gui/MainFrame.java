@@ -106,9 +106,14 @@ public class MainFrame extends JFrame
 		this.getContentPane().add(this.container,BorderLayout.SOUTH);
 		this.getContentPane().add(new JScrollPane(this.spezienliste),BorderLayout.WEST);
 		
-		feld = new FieldPanel(parent.getSpielfeld());
+		feld = new FieldPanel(parent.getSpielfeld(), this);
 		this.add(feld, BorderLayout.CENTER);
 		this.pack();
+	}
+	
+	public Spezies getSpezies()
+	{
+		return spezienliste.getSelectedValue();
 	}
 	
 	private void initListeners()
