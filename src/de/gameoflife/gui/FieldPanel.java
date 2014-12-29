@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import de.gameoflife.models.Spielfeld;
 
 /**
@@ -85,13 +87,23 @@ public class FieldPanel extends JPanel implements Observer
 				{
 					if(panels[i][j] == e.getSource())
 					{
-						if(parent.getSpezies() != null)
-						{
-							feld.setFeld(j, i, parent.getSpezies().getId());
-							repaint();
+						if (!SwingUtilities.isRightMouseButton(e))
+						{ 
+//							System.out.println("Test");
+							if (parent.getSpezies() != null)
+							{
+								feld.setFeld(j, i, parent.getSpezies().getId());
+								repaint();
+							}
+							return;
 						}
-						return;
-						
+						else
+						{
+							System.out.println("test");
+							feld.setFeld(j,i,0);
+							repaint();
+							return;
+						}
 					}
 				}
 			}
