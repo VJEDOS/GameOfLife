@@ -247,10 +247,7 @@ public class MainController implements Runnable
 	 */
 	public void openAddFrame()
 	{
-		if (addFrame == null)
-		{
-//			addFrame = new AddFrame(this);
-		}
+		addFrame = new AddFrame(this);
 	}
 	
 	/**
@@ -258,10 +255,7 @@ public class MainController implements Runnable
 	 */
 	public void openEditFrame(Spezies s)
 	{
-		if (addFrame == null)
-		{
-//			exportFrame  = new ExportFrame(this, s);
-		}
+		addFrame  = new AddFrame(s, this);	
 	}
 
 	/**
@@ -278,6 +272,11 @@ public class MainController implements Runnable
 	public Spielfeld getSpielfeld()
 	{
 		return spielfeld;
+	}
+	
+	public MainFrame getMainFrame()
+	{
+		return mainFrame;
 	}
 	
 	/**

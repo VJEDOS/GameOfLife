@@ -187,6 +187,16 @@ public class Spielfeld  extends Observable implements Serializable
 	}
 	
 	/**
+	 * Fügt Spezie hinzu
+	 * @param s
+	 * @param override
+	 */
+	public void addSpezies(Spezies s)
+	{
+		spezien.put(s.getId(), s);
+	}
+	
+	/**
 	 * Erstellt ein Buffered Image aus diesem Spielfeld
 	 * Skaliert das Feld hoch
 	 * @param xSize Breite des Bildes

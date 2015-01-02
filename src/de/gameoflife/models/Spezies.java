@@ -107,7 +107,10 @@ public class Spezies implements Serializable
 		{
 			this.geburt = geburt;
 		}
-		throw new RuntimeException("Ungueltiger Wert");
+		else
+		{
+			throw new RuntimeException("Ungueltiger Wert");
+		}
 	}
 	
 	/**
@@ -130,7 +133,10 @@ public class Spezies implements Serializable
 		{
 			this.isolation = isolation;
 		}
-		throw new RuntimeException("Ungueltiger Isolationswert");
+		else
+		{
+			throw new RuntimeException("Ungueltiger Isolationswert");
+		}
 	}
 	
 	/**
@@ -153,7 +159,10 @@ public class Spezies implements Serializable
 		{
 			this.maximum = maximum;
 		}
-		throw new RuntimeException("Ungültiger Maximalwert");
+		else
+		{
+			throw new RuntimeException("Ungültiger Maximalwert");
+		}
 	}
 	
 	/**

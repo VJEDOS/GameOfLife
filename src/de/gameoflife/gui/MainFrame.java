@@ -9,6 +9,8 @@ import java.awt.FocusTraversalPolicy;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 
@@ -20,9 +22,12 @@ import javax.swing.event.ListSelectionListener;
 
 import de.gameoflife.controllers.MainController;
 import de.gameoflife.models.Spezies;
+import de.gameoflife.models.Spielfeld;
 
 public class MainFrame extends JFrame
 {
+	private MainFrame frame = this;
+	
 	private Toolkit t;
 	private int x = 0, y = 0, width = 800, height = 600;
 	private JPanel container;
@@ -43,7 +48,7 @@ public class MainFrame extends JFrame
 	//Controller
 	private MainController parent;
 	//Spielfeld
-	private JPanel feld;
+	private FieldPanel feld;
 	
 	public MainFrame(MainController parent)
 	{
@@ -116,20 +121,26 @@ public class MainFrame extends JFrame
 		return spezienliste.getSelectedValue();
 	}
 	
+	public void addListModel(Spezies s)
+	{
+		listModel.add(listModel.getSize(), s);
+	}
+	
 	private void initListeners()
 	{
 		Handler h = new Handler();
 		this.play.addActionListener(h);
+		this.add.addActionListener(h);
 		this.save.addActionListener(h);
 		this.export.addActionListener(h);
 		this.load.addActionListener(h);
 		this.stop.addActionListener(h);
 		this.restart.addActionListener(h);
 		this.slider.addChangeListener(h);
-		this.spezienliste.addListSelectionListener(h);
+		this.spezienliste.addMouseListener(h);
 	}
 	
-	private class Handler implements ActionListener, ChangeListener, ListSelectionListener
+	private class Handler implements ActionListener, ChangeListener, MouseListener
 	{
 
 		@Override
@@ -159,7 +170,7 @@ public class MainFrame extends JFrame
 		        int rueckgabeWert = chooser.showOpenDialog(null);
 		        if(rueckgabeWert == JFileChooser.APPROVE_OPTION)
 		        {
-		             path = chooser.getSelectedFile().getName();
+		             path = chooser.getSelectedFile().getAbsolutePath();
 		        }
 		        else
 		        {
@@ -168,6 +179,7 @@ public class MainFrame extends JFrame
 		        try 
 		        {
 					parent.speichern(path);
+					JOptionPane.showMessageDialog(null, "Speichern erfolgreich", "Speichern erfolgreich", JOptionPane.INFORMATION_MESSAGE);
 				} 
 		        catch (Exception e1) 
 		        {
@@ -186,7 +198,7 @@ public class MainFrame extends JFrame
 		        int rueckgabeWert = chooser.showOpenDialog(null);
 		        if(rueckgabeWert == JFileChooser.APPROVE_OPTION)
 		        {
-		             path = chooser.getSelectedFile().getName();
+		             path = chooser.getSelectedFile().getAbsolutePath();
 		        }
 		        else
 		        {
@@ -195,6 +207,9 @@ public class MainFrame extends JFrame
 		        try 
 		        {
 					parent.laden(path);
+					// Update 
+					feld = new FieldPanel(parent.getSpielfeld(), frame);
+					feld.repaint();
 				} 
 		        catch (Exception e1) 
 		        {
@@ -212,13 +227,25 @@ public class MainFrame extends JFrame
 		}
 
 		@Override
-		public void valueChanged(ListSelectionEvent arg0) 
+		public void mouseClicked(MouseEvent arg0) 
 		{
-			if (arg0.getSource() == spezienliste && spezienliste.getSelectedValue().getId() != 1)
+			if(arg0.getSource() == spezienliste && arg0.getClickCount() == 2 && spezienliste.getSelectedIndex() != 0)
 			{
-				parent.openEditFrame(spezienliste.getSelectedValue());
+				parent.openEditFrame(spezienliste.getSelectedValue());	
 			}
-		}			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {	}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) { }
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {	}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) { }			
 	}
 	
 	private class FocusTraversal extends FocusTraversalPolicy
