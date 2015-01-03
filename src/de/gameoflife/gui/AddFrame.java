@@ -64,7 +64,8 @@ public class AddFrame extends JFrame
 	private void initComponents()
 	{
 		//Container
-		this.container = new JPanel(new GridLayout(4,1));
+		this.container = new JPanel();
+		container.setLayout(new GridLayout(0,2,10,10)); // das 0,2 wird benötigt, damit sich das Layout korrekt verhält 
 		//Button
 		this.ok = new JButton("OK");
 		this.esc = new JButton("Abbrechen");
@@ -73,7 +74,10 @@ public class AddFrame extends JFrame
 		JLabel l = new JLabel("Name:", JLabel.TRAILING);
 		container.add(l);
 		this.textField = new JTextField(10);
-		l.setLabelFor(textField);
+		textField.setEditable(false);
+		if(!neu){ textField.setText(String.valueOf(s.getId())); }
+		else { textField.setText(String.valueOf(Spezies.getCounter() + 1)); }
+		//l.setLabelFor(textField);
 		container.add(textField);
 		//JSpinner
 		JLabel la = new JLabel("Geburt bei: ", JLabel.TRAILING);
@@ -85,29 +89,31 @@ public class AddFrame extends JFrame
 		container.add(la);
 		container.add(geburtBei);
 		
-		JLabel laa = new JLabel( "Isolation: ", JLabel.TRAILING);
+		JLabel label_iso = new JLabel( "Isolation: ", JLabel.TRAILING);
 		SpinnerModel model_iso;
 		if(!neu) { model_iso = new SpinnerNumberModel(s.getIsolation(),1,8,1); }
 		else { model_iso = new SpinnerNumberModel(4,1,8,1); }
 		this.isolation = new JSpinner(model_iso);
-		container.add(laa);
+		container.add(label_iso);
 		container.add(isolation);
 		
-		JLabel laaa = new JLabel("Überbevölkerung: ", JLabel.TRAILING);
+		JLabel label_max = new JLabel("Überbevölkerung: ", JLabel.TRAILING);
 		SpinnerModel model_max;
 		if (!neu) {model_max =  new SpinnerNumberModel(s.getMaximum(),1,8,1); }
 		else { model_max = new SpinnerNumberModel(4,1,8,1);}
 		this.max = new JSpinner(model_max);
-		container.add(laaa);
+		container.add(label_max);
 		container.add(max);
 		
 		// Container
+		this.container.add(farbe);
+		this.container.add(new JPanel());
 		this.container.add(this.ok);
 		this.container.add(this.esc);
-		this.container.add(farbe);
 		this.getContentPane().add(this.container);
-		//this.pack();
+		this.pack();
 	}
+	
 	private void initListeners()
 	{
 		Handler h = new Handler();
@@ -115,6 +121,7 @@ public class AddFrame extends JFrame
 		this.esc.addActionListener(h);
 		this.farbe.addActionListener(h);
 	}
+	
 	private class Handler implements ActionListener
 	{
 		@Override
@@ -122,6 +129,16 @@ public class AddFrame extends JFrame
 		{
 			if (e.getSource() == ok)
 			{
+				Spezies temp = new Spezies((int)geburtBei.getValue(), (int)isolation.getValue(), (int)max.getValue(), color);
+				try 
+				{
+					temp.check();	
+				}
+				catch (Exception e1) 
+				{
+					JOptionPane.showMessageDialog(null, "Isolation > Überbevölkerung", "Isolation > Überbevölkerung", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
 				if(!neu)
 				{
 					s.setGeburt((int)geburtBei.getValue());

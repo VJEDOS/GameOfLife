@@ -78,6 +78,17 @@ public class Spezies implements Serializable
 		editierbar = true;
 	}
 	
+	public Spezies(Spezies s)
+	{
+		this.id = s.zaehler;
+		this.geburt = s.geburt;
+		this.maximum = s.maximum;
+		this.isolation = s.isolation;
+		this.farbe = s.farbe;
+		editierbar = true;
+		
+	}
+	
 	/**
 	 * Gibt die Id der Spezies zurück
 	 * @return Id der Spezies
@@ -129,7 +140,7 @@ public class Spezies implements Serializable
 	 */
 	public void setIsolation(int isolation) 
 	{
-		if(isolation > 0 && isolation < 9 && isolation < this.maximum && this.editierbar)
+		if(isolation > 0 && isolation < 9 && this.editierbar)
 		{
 			this.isolation = isolation;
 		}
@@ -148,14 +159,14 @@ public class Spezies implements Serializable
 		return maximum;
 	}
 	
-	/**
+	/**b
 	 * Setzt den Maximalwert. Muss über dem Minimum liegen.
 	 * Zudem muss das Editier-Flag gesetzt sein.
 	 * @param maximum Das neue Maximum
 	 */
 	public void setMaximum(int maximum) 
 	{
-		if(maximum > 0 && maximum < 9 && maximum > this.isolation && editierbar)
+		if(maximum > 0 && maximum < 9 && editierbar)
 		{
 			this.maximum = maximum;
 		}
@@ -181,6 +192,23 @@ public class Spezies implements Serializable
 	public void setFarbe(Color farbe)
 	{
 		this.farbe = farbe;
+	}
+	
+	public static int getCounter()
+	{
+		return zaehler;
+	}
+	
+	/**
+	 * Prüft ob illegale Werte eingegeben wurden
+	 * @throws Exception
+	 */
+	public void check() throws Exception
+	{
+		if(maximum <= this.isolation)
+		{
+			throw new Exception("Ungueltige Werte");
+		}
 	}
 	
 	/**
