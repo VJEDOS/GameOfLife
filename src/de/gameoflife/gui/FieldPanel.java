@@ -25,7 +25,7 @@ import de.gameoflife.models.Spielfeld;
 public class FieldPanel extends JPanel implements Observer
 {
 	private Spielfeld feld;
-	private JPanel[][] panels;
+	private FieldPanelElement[][] panels;
 	private MainFrame parent;
 	
 	public FieldPanel(Spielfeld feld, MainFrame parent)
@@ -37,7 +37,7 @@ public class FieldPanel extends JPanel implements Observer
 		
 		this.setLayout(new GridLayout(0, feld.getHeight(), 1, 1));
 		
-		panels = new JPanel[feld.getWidth()][feld.getHeight()];
+		panels = new FieldPanelElement[feld.getWidth()][feld.getHeight()];
 		addPanels();
 		
 	}
@@ -49,7 +49,7 @@ public class FieldPanel extends JPanel implements Observer
 		{
 			for(int j = 0; j < feld.getHeight(); j++)
 			{
-				JPanel p = new JPanel();
+				FieldPanelElement p = new FieldPanelElement();
 				p.setSize(this.getWidth() / feld.getWidth(), this.getHeight() / feld.getHeight());
 				p.setOpaque(false);
 				p.addMouseListener(h);
@@ -68,7 +68,7 @@ public class FieldPanel extends JPanel implements Observer
 //		{
 //			for(int j = 0; j < feld.getHeight(); j++)
 //			{
-//				JPanel p = 
+//				JPanel p = panels[i][j]
 //				p.setSize(this.getWidth() / feld.getWidth(), this.getHeight() / feld.getHeight());
 //			}
 //		}
@@ -80,6 +80,29 @@ public class FieldPanel extends JPanel implements Observer
 		repaint();
 	}
 	
+	public void resolveMarked()
+	{
+		for(int i = 0; i < feld.getWidth(); i++)
+		{
+			for(int j = 0; j < feld.getHeight(); j++)
+			{
+				if(panels[i][j].isMarked())
+				{
+					if (parent.getSpezies() != null)
+					{
+						panels[i][j].setMarked(false);
+						feld.setFeld(j, i, parent.getSpezies().getId());
+						repaint();
+					}
+					else
+					{
+						return;
+					}				
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Click Handler
 	 * @author Dominik Stegemann
@@ -88,9 +111,10 @@ public class FieldPanel extends JPanel implements Observer
 	private class Handler implements MouseListener
 	{
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) 
+		{
 			for(int i = 0; i < feld.getWidth(); i++)
-			{
+			{								
 				for(int j = 0; j < feld.getHeight(); j++)
 				{
 					if(panels[i][j] == e.getSource())
@@ -103,13 +127,23 @@ public class FieldPanel extends JPanel implements Observer
 								feld.setFeld(j, i, parent.getSpezies().getId());
 								repaint();
 							}
+							else
+							{
+								panels[i][j].setMarked(true);
+							}
 							return;
 						}
 						else
 						{
-							System.out.println("test");
-							feld.setFeld(j,i,0);
-							repaint();
+							if(panels[i][j].isMarked())
+							{
+								panels[i][j].setMarked(false);
+							}
+							else
+							{
+								feld.setFeld(j,i,0);
+								repaint();
+							}
 							return;
 						}
 					}
@@ -121,7 +155,5 @@ public class FieldPanel extends JPanel implements Observer
 		public void mouseExited(MouseEvent arg0) { }
 		public void mousePressed(MouseEvent arg0) {	}
 		public void mouseReleased(MouseEvent arg0) { }
-	
-		
 	}
 }

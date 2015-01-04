@@ -233,6 +233,10 @@ public class MainFrame extends JFrame
 			{
 				parent.openEditFrame(spezienliste.getSelectedValue());	
 			}
+			else if (arg0.getSource() == spezienliste && arg0.getClickCount() == 1 )
+			{
+				feld.resolveMarked();
+			}
 		}
 
 		@Override
