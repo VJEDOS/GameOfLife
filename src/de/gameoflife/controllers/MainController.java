@@ -234,12 +234,12 @@ public class MainController implements Runnable
 	 */
 	public void openMainFrame()
 	{
-		if (mainFrame == null)
-		{
+//		if (mainFrame == null)
+//		{
 			mainFrame = new MainFrame(this);
 			Thread t = new Thread(this);
 			t.start();
-		}
+//		}
 	}
 	
 	/**

@@ -207,9 +207,8 @@ public class MainFrame extends JFrame
 		        try 
 		        {
 					parent.laden(path);
-					// Update 
-					feld = new FieldPanel(parent.getSpielfeld(), frame);
-					feld.repaint();
+					dispose();
+					parent.openMainFrame();
 				} 
 		        catch (Exception e1) 
 		        {
