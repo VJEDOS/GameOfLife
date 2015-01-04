@@ -70,7 +70,7 @@ public class Spezies implements Serializable
 	 */
 	public Spezies(int geburt, int isolation, int maximum, Color farbe)
 	{
-		this.id = ++zaehler;
+		this.id = zaehler++;
 		this.geburt = geburt;
 		this.maximum = maximum;
 		this.isolation = isolation;

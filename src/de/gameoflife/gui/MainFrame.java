@@ -219,7 +219,8 @@ public class MainFrame extends JFrame
 		}
 
 		@Override
-		public void stateChanged(ChangeEvent arg0) {
+		public void stateChanged(ChangeEvent arg0) 
+		{
 			if(arg0.getSource() == slider)
 			{
 				parent.setZeitschritt(slider.getValue());				

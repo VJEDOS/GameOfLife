@@ -45,13 +45,6 @@ public class Spielfeld  extends Observable implements Serializable
 		spezien = new HashMap<Integer, Spezies>();
 		Spezies s = new Spezies();
 		spezien.put(s.getId(), s);
-		for(int i = 0; i < 10; i++)
-		{
-			for (int j = 0; j < 10; j++)
-			{
-				setFeld(i, j, 1);
-			}
-		}
 	}	
 	
 	/**
@@ -153,11 +146,10 @@ public class Spielfeld  extends Observable implements Serializable
 	 */
 	public void setFeld(int x, int y, int value)
 	{
-		if(x < 0 || x > feld[0].length || y < 0 || y > feld.length)
-		{
-			throw new RuntimeException("Ungueltiges feld");
-		}
 		feld[x][y] = value;
+		System.out.print(x);
+		System.out.print("  ");
+		System.out.println(y);
 	}	
 	
 	/**

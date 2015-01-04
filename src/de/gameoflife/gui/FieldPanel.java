@@ -35,7 +35,7 @@ public class FieldPanel extends JPanel implements Observer
 		this.feld = feld;
 		feld.addObserver(this);
 		
-		this.setLayout(new GridLayout(feld.getHeight(), feld.getWidth(), 1, 1));
+		this.setLayout(new GridLayout(0, feld.getHeight(), 1, 1));
 		
 		panels = new JPanel[feld.getWidth()][feld.getHeight()];
 		addPanels();
@@ -64,6 +64,14 @@ public class FieldPanel extends JPanel implements Observer
 	{
 		super.paintComponent(g);
 		g.drawImage(feld.toImage(this.getWidth(), this.getHeight()),0,0,null);
+//		for(int i = 0; i < feld.getWidth(); i++)
+//		{
+//			for(int j = 0; j < feld.getHeight(); j++)
+//			{
+//				JPanel p = 
+//				p.setSize(this.getWidth() / feld.getWidth(), this.getHeight() / feld.getHeight());
+//			}
+//		}
 	}
 
 	@Override

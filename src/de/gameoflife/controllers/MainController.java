@@ -79,12 +79,10 @@ public class MainController implements Runnable
 	 */
 	public MainController() 
 	{
-		initFrame = new InitFrame();
+		initFrame = new InitFrame(this);
 		//DEBUG
-		spielfeld = new Spielfeld();
-		openMainFrame();
-		Thread t = new Thread(this);
-		t.start();
+		//spielfeld = new Spielfeld();
+		//openMainFrame();
 	}
 
 	/**
@@ -239,6 +237,8 @@ public class MainController implements Runnable
 		if (mainFrame == null)
 		{
 			mainFrame = new MainFrame(this);
+			Thread t = new Thread(this);
+			t.start();
 		}
 	}
 	
@@ -263,15 +263,20 @@ public class MainController implements Runnable
 	 */
 	public void openExportFrame()
 	{
-		if (exportFrame == null)
-		{
-//			exportFrame  = new ExportFrame(this);
-		}
+//		if (exportFrame == null)
+//		{
+			exportFrame  = new ExportFrame(this);
+//		}
 	}
 	
 	public Spielfeld getSpielfeld()
 	{
 		return spielfeld;
+	}
+	
+	public void setSpielfeld(Spielfeld s)
+	{
+		spielfeld = s;
 	}
 	
 	public MainFrame getMainFrame()
