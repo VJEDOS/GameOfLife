@@ -207,7 +207,8 @@ public class Spielfeld  extends Observable implements Serializable
 		{
 			throw new RuntimeException("Invalid size");
 		}
-		BufferedImage ret = new BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB);
+//		BufferedImage ret = new BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB);
+		BufferedImage ret = new BufferedImage(xDimension * feld.length + 1, yDimension * feld[0].length + 1, BufferedImage.TYPE_INT_RGB);
 		for(int i = 0; i < feld.length; i++)
 		{
 			for (int j = 0; j < feld[i].length; j++)
@@ -355,7 +356,9 @@ public class Spielfeld  extends Observable implements Serializable
 		print();
 	}
 	
-	
+	/**
+	 * Ausgabe auf Konsole
+	 */
 	public void print()
 	{ 
 		for (int i = 0; i < feld.length; i++)

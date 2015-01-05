@@ -11,10 +11,13 @@ import javax.swing.event.ChangeListener;
 import de.gameoflife.controllers.MainController;
 import de.gameoflife.models.Spezies;
 
+/**
+ * Hinzufügen- und Editierenfenster
+ * @author ds
+ *
+ */
 public class AddFrame extends JFrame
 {
-	private Toolkit t;
-	private int x = 0, y = 0, width = 800, height = 600;
 	private JPanel container;
 	private boolean neu = false;
 	
@@ -30,37 +33,38 @@ public class AddFrame extends JFrame
 	private MainController parent;
 	private Spezies s;
 	
+	/**
+	 * Erstellt ein neues Fenster zum editieren
+	 * @param s Spezies, welche editiert werden soll
+	 * @param parent Referenz auf Controller
+	 */
 	public AddFrame(Spezies s, MainController parent)
 	{
 		super("Hinzufügen");
 		this.s = s;
-		t = Toolkit.getDefaultToolkit();
-		Dimension d = t.getScreenSize();
-		x = (int)((d.getWidth()-width)/2);
-		y = (int)((d.getHeight()-height)/2);
-		setBounds(x,y,width,height);
 		this.initComponents();
 		this.initListeners();
 		setVisible(true);
 		this.parent = parent;
 	}
 
+	/**
+	 * Erstellt ein neues Fenster zum Hinzufügen einer Spezies
+	 * @param parent Referenz auf Controller
+	 */
 	public AddFrame(MainController parent)
 	{
 		super("Hinzufügen");
 		neu = true;
-		t = Toolkit.getDefaultToolkit();
-		Dimension d = t.getScreenSize();
-		x = (int)((d.getWidth()-width)/2);
-		y = (int)((d.getHeight()-height)/2);
-		setBounds(x,y,width,height);
 		this.initComponents();
 		this.initListeners();
 		setVisible(true);
 		this.parent = parent;
 	}
 
-	
+	/**
+	 * Initialisiert die Komponenten
+	 */
 	private void initComponents()
 	{
 		//Container
@@ -114,6 +118,9 @@ public class AddFrame extends JFrame
 		this.pack();
 	}
 	
+	/**
+	 * Initialisiert Listener
+	 */
 	private void initListeners()
 	{
 		Handler h = new Handler();
@@ -122,6 +129,9 @@ public class AddFrame extends JFrame
 		this.farbe.addActionListener(h);
 	}
 	
+	/**
+	 *	Handler für Clicks
+	 */
 	private class Handler implements ActionListener
 	{
 		@Override

@@ -68,10 +68,16 @@ public class MainController implements Runnable
 	private volatile boolean gestartet;
 
 	// GUI
-	
+	/** Hauptfenster */
 	private MainFrame mainFrame;
+	
+	/** Hinzufügen-Fenster */
 	private AddFrame addFrame;
+	
+	/** Exportfenster */
 	private ExportFrame exportFrame;
+
+	/** Startfenster */
 	private InitFrame initFrame;
 	
 	/**
@@ -80,9 +86,6 @@ public class MainController implements Runnable
 	public MainController() 
 	{
 		initFrame = new InitFrame(this);
-		//DEBUG
-		//spielfeld = new Spielfeld();
-		//openMainFrame();
 	}
 
 	/**
@@ -148,10 +151,10 @@ public class MainController implements Runnable
 	}
 
 	/**
-	 * 
-	 * @param pfad
-	 * @param xSize
-	 * @param ySize
+	 * Exportiert das Bild
+	 * @param pfad Pfad
+	 * @param xSize X-Größe
+	 * @param ySize Y-Größe
 	 * @return Angabe, ob erfolgreich oder nicht
 	 */
 	public boolean bildExport(String pfad, int xSize, int ySize)
@@ -200,11 +203,10 @@ public class MainController implements Runnable
 				try 
 				{
 					System.out.println(zeitschritt);
-					Thread.sleep(zeitschritt*1000);
+					Thread.sleep(zeitschritt*100);
 				} 
 				catch (InterruptedException e) 
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -230,20 +232,25 @@ public class MainController implements Runnable
 	}
 	
 	/**
-	 * Öffnet ein neues Hauptfenster, falls es noch keins gibt
+	 * Erstellt neues Startfenster
 	 */
-	public void openMainFrame()
+	public void openInitFrame()
 	{
-//		if (mainFrame == null)
-//		{
-			mainFrame = new MainFrame(this);
-			Thread t = new Thread(this);
-			t.start();
-//		}
+		initFrame = new InitFrame(this);
 	}
 	
 	/**
-	 * Öffnet ein neues Hinzufuegen-Fenster, falls es noch keins gibt
+	 * Öffnet ein neues Hauptfenster
+	 */
+	public void openMainFrame()
+	{
+			mainFrame = new MainFrame(this);
+			Thread t = new Thread(this);
+			t.start();
+	}
+	
+	/**
+	 * Öffnet ein neues Hinzufuegen-Fenster
 	 */
 	public void openAddFrame()
 	{
@@ -251,7 +258,7 @@ public class MainController implements Runnable
 	}
 	
 	/**
-	 * Öffnet ein neues Editfenster, falls es noch keins gibt
+	 * Öffnet ein neues Editfenster
 	 */
 	public void openEditFrame(Spezies s)
 	{
@@ -259,26 +266,35 @@ public class MainController implements Runnable
 	}
 
 	/**
-	 * Öffnet ein neues Exportfenster, falls es noch keins gibt
+	 * Öffnet ein neues Exportfenster
 	 */
 	public void openExportFrame()
 	{
-//		if (exportFrame == null)
-//		{
-			exportFrame  = new ExportFrame(this);
-//		}
+		exportFrame  = new ExportFrame(this);
 	}
 	
+	/**
+	 * Gibt Spielfeld zurück
+	 * @return Spielfeld
+	 */
 	public Spielfeld getSpielfeld()
 	{
 		return spielfeld;
 	}
-	
+
+	/**
+	 * Setzt das Spielfeld
+	 * @param s Spielfeld
+	 */
 	public void setSpielfeld(Spielfeld s)
 	{
 		spielfeld = s;
 	}
 	
+	/**
+	 * Gibt das Hauptfenster zurück
+	 * @return
+	 */
 	public MainFrame getMainFrame()
 	{
 		return mainFrame;

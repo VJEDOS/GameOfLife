@@ -12,10 +12,15 @@ import de.gameoflife.gui.MainFrame;
  */
 public class Main 
 {
+	/**
+	 * Main-Methode
+	 * @param args Argumente ( nicht benötigt)
+	 */
 	public static void main(String[] args) 
 	{
 		try 
 		{
+			// Setze  System-L&F
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}
 		catch (Exception e) 

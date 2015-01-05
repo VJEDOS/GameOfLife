@@ -22,7 +22,9 @@ import de.gameoflife.controllers.MainController;
 import de.gameoflife.enums.Modus;
 import de.gameoflife.models.Spielfeld;
 
-
+/**
+ *	Startfenster
+ */
 public class InitFrame extends JFrame
 {
 	private Toolkit t;
@@ -38,6 +40,10 @@ public class InitFrame extends JFrame
 	private JButton esc;
 	private MainController parent;
 	
+	/**
+	 * Erstellt neues Startfenster
+	 * @param parent Referenz auf Controller
+	 */
 	public InitFrame(MainController parent)
 	{
 		super("Game of Life-Spielfeld");
@@ -54,6 +60,9 @@ public class InitFrame extends JFrame
 		setVisible(true);
 	}
 	
+	/**
+	 * Initialisiert die Komponenten
+	 */
 	private void initComponents() 
 	{
 		this.container = new JPanel();
@@ -61,15 +70,15 @@ public class InitFrame extends JFrame
 		torsus = new JRadioButton("Torsus",true);
 		begrenzt = new JRadioButton("Begrenzt");
 
-		NumberFormat format = NumberFormat.getInstance();
-		format.setGroupingUsed(false);
-		NumberFormatter formatter = new NumberFormatter(format);
-		formatter.setAllowsInvalid(false);
+//		NumberFormat format = NumberFormat.getInstance();
+//		format.setGroupingUsed(false);
+//		NumberFormatter formatter = new NumberFormatter(format);
+//		formatter.setAllowsInvalid(false);
 		JLabel breiteLabel = new JLabel ("Breite");
-		breite = new JFormattedTextField(formatter);
+		breite = new JTextField();
 		breiteLabel.setLabelFor(breite);
 		JLabel hoeheLabel = new JLabel ("Hoehe");
-		hoehe = new JFormattedTextField(formatter);
+		hoehe = new JTextField();
 		hoeheLabel.setLabelFor(hoehe);
 
 		//Group the radio buttons.
@@ -94,9 +103,11 @@ public class InitFrame extends JFrame
 		pack();
 	}
 
-
-
-	private void initListeners() {
+	/**
+	 *	Initialisiert Listener 
+	 */
+	private void initListeners() 
+	{
 		// TODO Auto-generated method stub
 		Handler h = new Handler();
 		torsus.addActionListener(h);
@@ -105,9 +116,13 @@ public class InitFrame extends JFrame
 		esc.addActionListener(h);
 	}
 	
+	/**
+	 * Click-Handler
+	 */
 	private class Handler implements ActionListener
 	{
 		@Override
+		//Starte das Hauptfenster
 		public void actionPerformed(ActionEvent e)
 		{
 			Modus modus = Modus.TORSUS;
@@ -119,23 +134,35 @@ public class InitFrame extends JFrame
 				{
 					breiteInt = Integer.valueOf(breite.getText());
 					hoeheInt = Integer.valueOf(hoehe.getText());
+					if(breiteInt < 0 || hoeheInt < 0)
+					{
+						JOptionPane.showMessageDialog(null, "Ungueltige Werte", "Ungueltige Werte", JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
 				}
 				catch (Exception ex)
 				{
 					JOptionPane.showMessageDialog(null, "Ungueltige Werte", "Ungueltige Werte", JOptionPane.INFORMATION_MESSAGE);	
+					return;
 				}
 				parent.setSpielfeld( new Spielfeld(breiteInt, hoeheInt,modus));
 				parent.openMainFrame();
 				dispose();
 			}
+			
+			// Beendet Programm
 			if (e.getSource() == esc)
 			{
 				dispose();
 			}
+			
+			// Modus -> Begrenzt
 			if(e.getSource()== torsus)
 			{
 				modus=Modus.TORSUS;
 			}
+			
+			//Modus -> Begrenzt
 			if(e.getSource()== begrenzt)
 			{
 				modus=Modus.BEGRENZT;

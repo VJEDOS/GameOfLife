@@ -10,6 +10,11 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import de.gameoflife.controllers.MainController;
 
+/**
+ * Das Fenster für den Export
+ * @author Vethiha Jegatheesan
+ *
+ */
 public class ExportFrame extends JFrame
 {
 	private Toolkit t;
@@ -26,6 +31,10 @@ public class ExportFrame extends JFrame
 	private JButton ok;
 	private JButton esc;
 
+	/**
+	 * Erstellt ein neues Exportframe
+	 * @param parent
+	 */
 	public ExportFrame(MainController parent)
 	{
 		super("Exportieren");
@@ -41,6 +50,9 @@ public class ExportFrame extends JFrame
 		setVisible(true);
 	}
 	
+	/**
+	 * Initialisiert Komponenten
+	 */
 	private void initComponents() {
 		this.container = new JPanel();
 		container.setLayout(new GridLayout(0,2,10,10));
@@ -87,6 +99,9 @@ public class ExportFrame extends JFrame
 		pack();
 	}
 
+	/**
+	 * Initalisiert Listener
+	 */
 	private void initListeners() 
 	{
 		Handler h = new Handler();
@@ -96,11 +111,15 @@ public class ExportFrame extends JFrame
 		esc.addActionListener(h);
 	}
 	
+	/**
+	 * Klick Handler
+	 */
 	private class Handler implements ActionListener
 	{
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
+			// Exportieren
 			if (e.getSource() == ok)
 			{
 				int breiteInt = 0;
@@ -111,10 +130,16 @@ public class ExportFrame extends JFrame
 					breiteInt = Integer.valueOf(breite.getText());
 					hoeheInt = Integer.valueOf(hoehe.getText());
 					if (gif.isSelected()) anzahlInt = Integer.valueOf(anzahl.getText());
+					if(breiteInt < 0 || hoeheInt < 0  || anzahlInt < 0)
+					{
+						JOptionPane.showMessageDialog(null, "Ungueltige Werte", "Ungueltige Werte", JOptionPane.INFORMATION_MESSAGE);	
+						return;
+					}
 				}
 				catch (Exception ex)
 				{
 					JOptionPane.showMessageDialog(null, "Ungueltige Werte", "Ungueltige Werte", JOptionPane.INFORMATION_MESSAGE);	
+					return;
 				}
 								
 				if (breiteInt > 3794 || hoeheInt > 3794)
@@ -145,19 +170,24 @@ public class ExportFrame extends JFrame
 				}
 				dispose();
 			}
+			
+			//Schließen
 			if (e.getSource() == esc)
 			{
 				dispose();
 			}
+			
+			// Anzahl-Feld sperren
 			if(e.getSource() == jpg)
 			{
 				anzahl.setEditable(false);
 			}
+			
+			//Anzahl Feld öffnen
 			if(e.getSource() == gif)
 			{
 				anzahl.setEditable(true);
 			}
 		}
 	}
-
 }

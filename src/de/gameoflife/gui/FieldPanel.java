@@ -8,6 +8,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,10 +25,22 @@ import de.gameoflife.models.Spielfeld;
  */
 public class FieldPanel extends JPanel implements Observer
 {
+	/** Feld */
 	private Spielfeld feld;
+	
+	/** Unterpanels */
 	private FieldPanelElement[][] panels;
+	
+	/** Parent */
 	private MainFrame parent;
 	
+	private GridLayout layout;
+	
+	/**
+	 * Erstellt ein neues Feld
+	 * @param feld Feld
+	 * @param parent Controller
+	 */
 	public FieldPanel(Spielfeld feld, MainFrame parent)
 	{
 		this.parent = parent;
@@ -35,13 +48,17 @@ public class FieldPanel extends JPanel implements Observer
 		this.feld = feld;
 		feld.addObserver(this);
 		
-		this.setLayout(new GridLayout(0, feld.getHeight(), 1, 1));
+		layout = new GridLayout(0, feld.getHeight(), 1, 1);
+		
+		this.setLayout(layout);
 		
 		panels = new FieldPanelElement[feld.getWidth()][feld.getHeight()];
 		addPanels();
-		
 	}
 	
+	/**
+	 * Fügt Panels hinzu
+	 */
 	private void addPanels() 
 	{
 		Handler h = new Handler();
@@ -50,7 +67,7 @@ public class FieldPanel extends JPanel implements Observer
 			for(int j = 0; j < feld.getHeight(); j++)
 			{
 				FieldPanelElement p = new FieldPanelElement();
-				p.setSize(this.getWidth() / feld.getWidth(), this.getHeight() / feld.getHeight());
+				p.setSize(this.getWidth() / feld.getWidth() -1, this.getHeight() / feld.getHeight() -1);
 				p.setOpaque(false);
 				p.addMouseListener(h);
 				panels[i][j] = p;
@@ -59,27 +76,39 @@ public class FieldPanel extends JPanel implements Observer
 		}
 	}
 
+	/**
+	 * Neuzeichnen des Felds
+	 */
 	@Override
 	protected void paintComponent(Graphics g) 
 	{
 		super.paintComponent(g);
-		g.drawImage(feld.toImage(this.getWidth(), this.getHeight()),0,0,null);
+		BufferedImage i = feld.toImage(this.getWidth(), this.getHeight());
+
+//		this.setSize(i.getWidth(), i.getHeight());
+		g.drawImage(i,0,0,null);
 //		for(int i = 0; i < feld.getWidth(); i++)
 //		{
-//			for(int j = 0; j < feld.getHeight(); j++)
+//			for(int j = 0; j < feld.getHeight(); j++)()
 //			{
-//				JPanel p = panels[i][j]
-//				p.setSize(this.getWidth() / feld.getWidth(), this.getHeight() / feld.getHeight());
+//				JPanel p = panels[i][j];
+//				p.setSize(this.getWidth() / feld.getWidth()-2, this.getHeight() / feld.getHeight()-2);
 //			}
 //		}
 	}
-
+	
+	/**
+	 * Neuzeichnen bei Zugende
+	 */
 	@Override
 	public void update(Observable o, Object arg) 
 	{
 		repaint();
 	}
 	
+	/**
+	 * Setzt alle markierten auf die ausgewählte Spezies
+	 */
 	public void resolveMarked()
 	{
 		for(int i = 0; i < feld.getWidth(); i++)

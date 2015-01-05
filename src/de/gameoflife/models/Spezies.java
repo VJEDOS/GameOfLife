@@ -78,6 +78,10 @@ public class Spezies implements Serializable
 		editierbar = true;
 	}
 	
+	/**
+	 * Copy Constructor
+	 * @param s Spezies
+	 */
 	public Spezies(Spezies s)
 	{
 		this.id = s.zaehler;
@@ -194,6 +198,10 @@ public class Spezies implements Serializable
 		this.farbe = farbe;
 	}
 	
+	/**
+	 * Gibt den Counter zurück
+	 * @return
+	 */
 	public static int getCounter()
 	{
 		return zaehler;

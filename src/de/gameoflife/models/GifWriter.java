@@ -17,8 +17,19 @@ import GifWriter.GifSequenceWriter;
  */
 public class GifWriter 
 {
+	/**
+	 * Die Bilder, die geschrieben werden
+	 */
 	private List<BufferedImage> imageList;
+	
+	/**
+	 * Speicherpfad
+	 */
 	private String pfad;
+	
+	/**
+	 * Anzahl Sekunden zwischen den Bildern
+	 */
 	private int sekunden;
 	
 	/**
