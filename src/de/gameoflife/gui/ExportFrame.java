@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
 import de.gameoflife.controllers.MainController;
 
 /**
@@ -17,33 +18,41 @@ import de.gameoflife.controllers.MainController;
  */
 public class ExportFrame extends JFrame
 {
-	private Toolkit t;
-	private int x = 0, y = 0, width = 800, height = 600;
-	private JPanel container;
-
 	//Komponenten
+	/** JPG */
 	private JRadioButton jpg;
+	
+	/** GIF */
 	private JRadioButton gif;
+	
+	/** Referenz auf Controller */
 	private MainController parent;
+	
+	/** Breite */
 	private JTextField breite;
+	
+	/** Höhe */
 	private JTextField hoehe;
+	
+	/** Anzahl */
 	private JTextField anzahl;
+	
+	/** OK */
 	private JButton ok;
+	
+	/** Schließen */
 	private JButton esc;
+	
+	/** Container */
+	private JPanel container;
 
 	/**
 	 * Erstellt ein neues Exportframe
-	 * @param parent
+	 * @param parent Referenz auf Controller
 	 */
 	public ExportFrame(MainController parent)
 	{
 		super("Exportieren");
-
-		t = Toolkit.getDefaultToolkit();
-		Dimension d = t.getScreenSize();
-		x = (int)((d.getWidth()-width)/2);
-		y = (int)((d.getHeight()-height)/2);
-		setBounds(x,y,width,height);
 		this.parent = parent;
 		this.initComponents();
 		this.initListeners();
@@ -58,25 +67,21 @@ public class ExportFrame extends JFrame
 		container.setLayout(new GridLayout(0,2,10,10));
 		jpg = new JRadioButton("jpg",true);
 		gif = new JRadioButton("gif");
-
-		NumberFormat format = NumberFormat.getInstance();
-		format.setGroupingUsed(false);
-		
-		NumberFormatter formatter = new NumberFormatter(format);
-		formatter.setAllowsInvalid(false);
 		
 		JLabel breiteLabel = new JLabel ("Breite");
-		breite = new JFormattedTextField(formatter);
 		breiteLabel.setLabelFor(breite);
 		
 		JLabel hoeheLabel = new JLabel ("Hoehe");
-		hoehe = new JFormattedTextField(formatter);
 		hoeheLabel.setLabelFor(hoehe);
 		
 		JLabel anzahlLabel = new JLabel ("Anzahl");
-		anzahl = new JFormattedTextField(formatter);
-		anzahl.setEditable(false);
 		anzahlLabel.setLabelFor(anzahl);
+		
+		breite = new JTextField();
+		hoehe = new JTextField();
+		anzahl = new JTextField();
+		
+		
 		//Group the radio buttons.
 		
 		ButtonGroup group = new ButtonGroup();
@@ -166,7 +171,7 @@ public class ExportFrame extends JFrame
 				}
 				else
 				{
-					parent.starteGifExport(path, breiteInt, hoeheInt, 1000, anzahlInt);
+					parent.starteGifExport(path, breiteInt, hoeheInt, 100, anzahlInt);
 				}
 				dispose();
 			}

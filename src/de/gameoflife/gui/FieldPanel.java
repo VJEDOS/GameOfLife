@@ -150,11 +150,11 @@ public class FieldPanel extends JPanel implements Observer
 					{
 						if (!SwingUtilities.isRightMouseButton(e))
 						{ 
-//							System.out.println("Test");
 							if (parent.getSpezies() != null)
 							{
 								feld.setFeld(j, i, parent.getSpezies().getId());
 								repaint();
+								parent.getSpezienliste().clearSelection();
 							}
 							else
 							{

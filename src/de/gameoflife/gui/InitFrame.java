@@ -20,6 +20,7 @@ import javax.swing.*;
 
 import de.gameoflife.controllers.MainController;
 import de.gameoflife.enums.Modus;
+import de.gameoflife.models.Spezies;
 import de.gameoflife.models.Spielfeld;
 
 /**
@@ -27,18 +28,30 @@ import de.gameoflife.models.Spielfeld;
  */
 public class InitFrame extends JFrame
 {
-	private Toolkit t;
-	private int x = 0, y = 0, width = 800, height = 600;
-	private JPanel container;
-
 	//Komponenten
+	/** Torsus */
 	private JRadioButton torsus;
+	
+	/** Begrenzt*/
 	private JRadioButton begrenzt;
+	
+	/** Breite */
 	private JTextField breite;
+	
+	/** Höhe */
 	private JTextField hoehe;
+	
+	/** OK */
 	private JButton ok;
+	
+	/** Beenden */
 	private JButton esc;
-	private MainController parent;
+
+	/** Container */
+	private JPanel container;
+	
+	/** Referenz auf Controller */
+	private MainController parent;	
 	
 	/**
 	 * Erstellt neues Startfenster
@@ -50,11 +63,6 @@ public class InitFrame extends JFrame
 
 		this.parent = parent;
 		
-		t = Toolkit.getDefaultToolkit();
-		Dimension d = t.getScreenSize();
-		x = (int)((d.getWidth()-width)/2);
-		y = (int)((d.getHeight()-height)/2);
-		setBounds(x,y,width,height);
 		this.initComponents();
 		this.initListeners();
 		setVisible(true);
@@ -69,11 +77,7 @@ public class InitFrame extends JFrame
 		container.setLayout(new GridLayout(0,2,10,10));
 		torsus = new JRadioButton("Torsus",true);
 		begrenzt = new JRadioButton("Begrenzt");
-
-//		NumberFormat format = NumberFormat.getInstance();
-//		format.setGroupingUsed(false);
-//		NumberFormatter formatter = new NumberFormatter(format);
-//		formatter.setAllowsInvalid(false);
+		
 		JLabel breiteLabel = new JLabel ("Breite");
 		breite = new JTextField();
 		breiteLabel.setLabelFor(breite);
@@ -108,7 +112,6 @@ public class InitFrame extends JFrame
 	 */
 	private void initListeners() 
 	{
-		// TODO Auto-generated method stub
 		Handler h = new Handler();
 		torsus.addActionListener(h);
 		begrenzt.addActionListener(h);
@@ -145,7 +148,8 @@ public class InitFrame extends JFrame
 					JOptionPane.showMessageDialog(null, "Ungueltige Werte", "Ungueltige Werte", JOptionPane.INFORMATION_MESSAGE);	
 					return;
 				}
-				parent.setSpielfeld( new Spielfeld(breiteInt, hoeheInt,modus));
+				Spezies.resetCounter();
+				parent.setSpielfeld(new Spielfeld(breiteInt, hoeheInt,modus));
 				parent.openMainFrame();
 				dispose();
 			}

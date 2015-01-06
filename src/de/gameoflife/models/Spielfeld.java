@@ -118,7 +118,7 @@ public class Spielfeld  extends Observable implements Serializable
 					}
 					if (max != null)
 					{
-						if (maxInt >= max.getGeburt())
+						if (maxInt == max.getGeburt())
 						{
 							temp[i][j] = max.getId();
 						}
@@ -200,14 +200,13 @@ public class Spielfeld  extends Observable implements Serializable
 		/*
 		 * -1 für das Raster 
 		 */
-		int xDimension = xSize / feld.length - 1;
-		int yDimension = ySize / feld[0].length - 1;
+		int xDimension = xSize / feld.length;
+		int yDimension = ySize / feld[0].length;
 		
 		if (xDimension <= 0 || yDimension <= 0)
 		{
 			throw new RuntimeException("Invalid size");
 		}
-//		BufferedImage ret = new BufferedImage(xSize, ySize, BufferedImage.TYPE_INT_RGB);
 		BufferedImage ret = new BufferedImage(xDimension * feld.length + 1, yDimension * feld[0].length + 1, BufferedImage.TYPE_INT_RGB);
 		for(int i = 0; i < feld.length; i++)
 		{
@@ -216,9 +215,9 @@ public class Spielfeld  extends Observable implements Serializable
 				/*
 				 * Die Schleifen starten bei 1, damit sie das Raster nicht überschreiben
 				 */
-				for(int x = 1; x < xDimension; x++)
+				for(int x = 1; x < xDimension-1; x++)
 				{
-					for(int y = 1; y < yDimension; y++)
+					for(int y = 1; y < yDimension-1; y++)
 					{
 						if(feld[i][j] != 0)
 						{
@@ -229,9 +228,9 @@ public class Spielfeld  extends Observable implements Serializable
 							ret.setRGB(i*xDimension+x, j*yDimension+y, Color.white.getRGB());
 						}
 					}
-					ret.setRGB(i*xDimension, (j+1)*yDimension, Color.BLACK.getRGB());
+					ret.setRGB(i*xDimension, (j)*yDimension, Color.BLACK.getRGB());
 				}
-				ret.setRGB((i+1)*xDimension, (j+1)*yDimension, Color.BLACK.getRGB());
+				ret.setRGB((i+1)*xDimension, (j)*yDimension, Color.BLACK.getRGB());
 			}
 		}
 		return ret;
@@ -331,44 +330,5 @@ public class Spielfeld  extends Observable implements Serializable
 			}
 		}
 		return zaehler;
-	}
-	
-	
-	/**
-	 * TEST CONSTRUCTOR
-	 */
-	public Spielfeld()
-	{
-		feld = new int[4][4];
-		modus = Modus.BEGRENZT;
-		spezien = new HashMap<Integer, Spezies>();
-		Spezies s = new Spezies();
-		spezien.put(s.getId(), s);
-		Spezies s2 = new Spezies(2,3,4,Color.blue);
-		spezien.put(s2.getId(), s2);
-		feld[1][0] = 1;
-		feld[2][0] = 1;
-		feld[3][0] = 1;
-		feld[2][1] = 1;
-		feld[1][2] = 2;
-		feld[2][2] = 2;
-						
-		print();
-	}
-	
-	/**
-	 * Ausgabe auf Konsole
-	 */
-	public void print()
-	{ 
-		for (int i = 0; i < feld.length; i++)
-		{
-			for (int j = 0; j < feld[i].length; j++)
-			{
-				System.out.print(feld[j][i] + "  ");
-			}
-			System.out.println();
-		}
-		System.out.println();
 	}
 }

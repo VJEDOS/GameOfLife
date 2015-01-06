@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.3
+Created-By: 1.7.0_65-b32 (Oracle Corporation)
+Built-By: Dominik Stegemann, Vethiha Jegatheesan
+Built-On: 2015-01-06’ ’19:37:08
+Main-Class: de/gameoflife/main/Main
+

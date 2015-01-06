@@ -68,9 +68,9 @@ public class Spezies implements Serializable
 	 * @param isolation Isolation
 	 * @param maximum Maximum
 	 */
-	public Spezies(int geburt, int isolation, int maximum, Color farbe)
+	public Spezies(int geburt, int isolation, int maximum, Color farbe, boolean temporaer)
 	{
-		this.id = zaehler++;
+		if(!temporaer) this.id = ++zaehler;
 		this.geburt = geburt;
 		this.maximum = maximum;
 		this.isolation = isolation;
@@ -84,7 +84,7 @@ public class Spezies implements Serializable
 	 */
 	public Spezies(Spezies s)
 	{
-		this.id = s.zaehler;
+		this.id = zaehler;
 		this.geburt = s.geburt;
 		this.maximum = s.maximum;
 		this.isolation = s.isolation;
@@ -205,6 +205,14 @@ public class Spezies implements Serializable
 	public static int getCounter()
 	{
 		return zaehler;
+	}
+	
+	/**
+	 * Stellt den Counter zurück
+	 */
+	public static void resetCounter()
+	{
+		zaehler = 0;
 	}
 	
 	/**

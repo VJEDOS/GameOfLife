@@ -152,7 +152,7 @@ public class MainController implements Runnable
 
 	/**
 	 * Exportiert das Bild
-	 * @param pfad Pfad
+	 * @param pfad Pfad 
 	 * @param xSize X-Größe
 	 * @param ySize Y-Größe
 	 * @return Angabe, ob erfolgreich oder nicht
@@ -202,7 +202,6 @@ public class MainController implements Runnable
 				zug();
 				try 
 				{
-					System.out.println(zeitschritt);
 					Thread.sleep(zeitschritt*100);
 				} 
 				catch (InterruptedException e) 

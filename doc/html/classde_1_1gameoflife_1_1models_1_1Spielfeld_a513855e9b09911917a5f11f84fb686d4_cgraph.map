@@ -1,0 +1,6 @@
+<map id="de.gameoflife.models.Spielfeld.naechsterZug" name="de.gameoflife.models.Spielfeld.naechsterZug">
+<area shape="rect" id="node2" href="$classde_1_1gameoflife_1_1models_1_1Spezies.html#a1f75c5740891cfe16f4488bdf5aba660" title="de.gameoflife.models.Spezies.getId" alt="" coords="337,5,567,32"/>
+<area shape="rect" id="node3" href="$classde_1_1gameoflife_1_1models_1_1Spezies.html#a5832063ef1552fd12b52640cf621ac38" title="de.gameoflife.models.Spezies.get\lIsolation" alt="" coords="343,57,561,98"/>
+<area shape="rect" id="node4" href="$classde_1_1gameoflife_1_1models_1_1Spezies.html#a4c88e513cbed18a5c48453ff428f7901" title="de.gameoflife.models.Spezies.get\lMaximum" alt="" coords="343,122,561,163"/>
+<area shape="rect" id="node5" href="$classde_1_1gameoflife_1_1models_1_1Spezies.html#a785118f5e8bb910366620cf91e076ff1" title="de.gameoflife.models.Spezies.get\lGeburt" alt="" coords="343,187,561,229"/>
+</map>

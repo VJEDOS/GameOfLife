@@ -35,21 +35,6 @@ public class MainFrame extends JFrame
 	/** Referenz für Handler */
 	private MainFrame frame = this;
 
-	/** Toolkit */
-	private Toolkit t;
-	
-	/** X-Pos */
-	private int x = 0;
-	
-	/** Y-Pos */
-	private int y = 0;
-	
-	/** Breite */
-	private int width = 800;
-	
-	/** Höhe */
-	private int height = 600;
-	
 	/** Container */
 	private JPanel container;
 	
@@ -99,11 +84,6 @@ public class MainFrame extends JFrame
 	{
 		super("Game of Life");
 		this.parent = parent;
-		t = Toolkit.getDefaultToolkit();
-		Dimension d = t.getScreenSize();
-		x = (int)((d.getWidth()-width)/2);
-		y = (int)((d.getHeight()-height)/2);
-		setBounds(x,y,width,height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.initComponents();
 		this.initListeners();
@@ -201,6 +181,15 @@ public class MainFrame extends JFrame
 		this.restart.addActionListener(h);
 		this.slider.addChangeListener(h);
 		this.spezienliste.addMouseListener(h);
+	}
+	
+	/**
+	 * Gibt die Spezienliste zurück
+	 * @return Liste
+	 */
+	public JList getSpezienliste()
+	{
+		return spezienliste;
 	}
 	
 	/**
@@ -320,6 +309,13 @@ public class MainFrame extends JFrame
 			else if (arg0.getSource() == spezienliste && arg0.getClickCount() == 1 )
 			{
 				feld.resolveMarked();
+			}
+			
+			System.out.println(spezienliste.locationToIndex(arg0.getPoint()));
+			
+			if (spezienliste.locationToIndex(arg0.getPoint()) == -1)
+			{
+				spezienliste.clearSelection();
 			}
 		}
 

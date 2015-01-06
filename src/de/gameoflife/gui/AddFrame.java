@@ -18,19 +18,43 @@ import de.gameoflife.models.Spezies;
  */
 public class AddFrame extends JFrame
 {
-	private JPanel container;
+
+	/** Bearbeitet oder neu */
 	private boolean neu = false;
 	
 	//Komponenten
+
+	/** Geburt bei */
 	private JSpinner geburtBei;
+	
+	/** Isolation */
 	private JSpinner isolation;
+	
+	/** Maximum */
 	private JSpinner max;
+	
+	/** Name Field */
 	private JTextField textField;
+	
+	/** OK-Button */
 	private JButton ok;
+	
+	/** Schließen */
 	private JButton esc;
+	
+	/** Farbe */
 	private JButton farbe;
+	
+	/** Container */
+	private JPanel container;
+
+	/** Ausgewählte Farbe */
 	private Color color=Color.BLUE;
+	
+	/** Referenz auf Controller */
 	private MainController parent;
+	
+	/** Bearbeitete Spezies */
 	private Spezies s;
 	
 	/**
@@ -79,15 +103,27 @@ public class AddFrame extends JFrame
 		container.add(l);
 		this.textField = new JTextField(10);
 		textField.setEditable(false);
-		if(!neu){ textField.setText(String.valueOf(s.getId())); }
-		else { textField.setText(String.valueOf(Spezies.getCounter() + 1)); }
-		//l.setLabelFor(textField);
+		if(!neu)
+		{ 
+			textField.setText(String.valueOf(s.getId())); 
+		}
+		else 
+		{ 
+			textField.setText(String.valueOf(Spezies.getCounter() + 1)); 
+		}
 		container.add(textField);
+		
 		//JSpinner
 		JLabel la = new JLabel("Geburt bei: ", JLabel.TRAILING);
 		SpinnerModel model_geb;
-		if(!neu) { model_geb = new SpinnerNumberModel(s.getGeburt(),1,8,1); }
-		else { model_geb = new SpinnerNumberModel(4,1,8,1); }
+		if(!neu) 
+		{ 
+			model_geb = new SpinnerNumberModel(s.getGeburt(),1,8,1); 
+		}
+		else 
+		{ 
+			model_geb = new SpinnerNumberModel(4,1,8,1); 
+		}
 		this.geburtBei = new JSpinner(model_geb);
 		la.setLabelFor(geburtBei);
 		container.add(la);
@@ -95,16 +131,28 @@ public class AddFrame extends JFrame
 		
 		JLabel label_iso = new JLabel( "Isolation: ", JLabel.TRAILING);
 		SpinnerModel model_iso;
-		if(!neu) { model_iso = new SpinnerNumberModel(s.getIsolation(),1,8,1); }
-		else { model_iso = new SpinnerNumberModel(4,1,8,1); }
+		if(!neu) 
+		{
+			model_iso = new SpinnerNumberModel(s.getIsolation(),1,8,1); 
+		}
+		else 
+		{ 
+			model_iso = new SpinnerNumberModel(3,1,8,1); 
+		}
 		this.isolation = new JSpinner(model_iso);
 		container.add(label_iso);
 		container.add(isolation);
 		
 		JLabel label_max = new JLabel("Überbevölkerung: ", JLabel.TRAILING);
 		SpinnerModel model_max;
-		if (!neu) {model_max =  new SpinnerNumberModel(s.getMaximum(),1,8,1); }
-		else { model_max = new SpinnerNumberModel(4,1,8,1);}
+		if (!neu) 
+		{
+			model_max =  new SpinnerNumberModel(s.getMaximum(),1,8,1); 
+		}
+		else 
+		{ 
+			model_max = new SpinnerNumberModel(4,1,8,1);
+		}
 		this.max = new JSpinner(model_max);
 		container.add(label_max);
 		container.add(max);
@@ -137,9 +185,10 @@ public class AddFrame extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
+			//Spezies neu erstellen bzw änderungen Speichern
 			if (e.getSource() == ok)
 			{
-				Spezies temp = new Spezies((int)geburtBei.getValue(), (int)isolation.getValue(), (int)max.getValue(), color);
+				Spezies temp = new Spezies((int)geburtBei.getValue(), (int)isolation.getValue(), (int)max.getValue(), color, true);
 				try 
 				{
 					temp.check();	
@@ -158,16 +207,20 @@ public class AddFrame extends JFrame
 				}
 				else
 				{
-					s = new Spezies((int)geburtBei.getValue(), (int)isolation.getValue(), (int)max.getValue(), color);
+					s = new Spezies((int)geburtBei.getValue(), (int)isolation.getValue(), (int)max.getValue(), color, false);
 					parent.getMainFrame().addListModel(s);
 				}
 				parent.getSpielfeld().addSpezies(s);
 				dispose();
 			}
+			
+			// Schließen
 			if (e.getSource() == esc)
 			{
 				dispose();
 			}
+			
+			// Aufruf Colorchooser
 			if(e.getSource() == farbe)
 			{
 				color = JColorChooser.showDialog(null,"Farbe für die Spezie wählen",color);
